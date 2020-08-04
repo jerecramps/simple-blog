@@ -1,4 +1,4 @@
-import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG } from '../constants';
+import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG} from '../constants';
 import { bake_cookie, read_cookie } from 'sfcookies';
 
 const blog = (action) => {
