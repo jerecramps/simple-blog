@@ -1,4 +1,4 @@
-import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG} from '../constants';
+import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG, SEARCH_BLOG} from '../constants';
 import { bake_cookie, read_cookie } from 'sfcookies';
 
 const blog = (action) => {
@@ -26,6 +26,12 @@ const updateBlog = (state = [], action) => {
   return blogs;
 }
 
+const searchBlog = (state = [], action) => {
+  state = read_cookie('blogs');
+  const blogs = state.filter(blog => blog.title.toLowerCase().includes(action.search) || blog.content.toLowerCase().includes(action.search));
+  return blogs;
+}
+
 const blogs = (state=[], action) => {
   let blogs = null;
   state = read_cookie('blogs');
@@ -41,6 +47,9 @@ const blogs = (state=[], action) => {
     case UPDATE_BLOG:
       blogs = updateBlog(state, action);
       bake_cookie('blogs', blogs);
+      return blogs;
+    case SEARCH_BLOG:
+      blogs = searchBlog(state, action);
       return blogs;
     default:
       return state;

@@ -1,4 +1,4 @@
-import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG } from '../constants';
+import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG, SEARCH_BLOG } from '../constants';
 
 export const createBlog = (title, content, datecreated) => {
   const action = {
@@ -27,6 +27,14 @@ export const updateBlog = (id, title, content, datecreated) => {
     title: title,
     content: content,
     datecreated: datecreated
+  }
+  return action;
+}
+
+export const searchBlog = (search) => {
+  const action = {
+    type: SEARCH_BLOG,
+    search: search
   }
   return action;
 }

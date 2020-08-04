@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { createBlog, deleteBlog, updateBlog} from '../actions';
+import { createBlog, deleteBlog, updateBlog, searchBlog} from '../actions';
 import moment from 'moment';
 import { FaEdit } from "react-icons/fa";
 import { confirmAlert } from 'react-confirm-alert';
@@ -13,7 +13,8 @@ class App extends Component {
     this.state = {
       title :'',
       content : '',
-      datecreated : moment().format('YYYY/MM/DD')
+      datecreated : moment().format('YYYY/MM/DD'),
+      search: ''
     }
   }
 
@@ -81,6 +82,10 @@ class App extends Component {
         )
       }
     })
+  }
+
+  searchBlog() {
+    this.props.searchBlog(this.state.search);
   }
 
   renderBlogs() {
@@ -162,6 +167,22 @@ class App extends Component {
                   onClick={(event)=>this.cancelEdit()}>
                   Cancel Edit
           </button></div>}
+          <div className="search-class row">
+            <div className="col-3">
+              <input
+                  className="form-control"
+                  placeholder="Search keyword"
+                  value={this.state.search}
+                  onChange={event=>this.setState({search:event.target.value})}/>
+            </div>
+            <div className="col-2 search-btn">
+              <button type="button"
+                      className="btn btn-info"
+                      onClick={(event)=>this.searchBlog()}>
+                      Search
+              </button>
+            </div>
+          </div>
 
         {this.renderBlogs()}
       </div>
@@ -170,7 +191,6 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     blogList: state
   }
@@ -184,4 +204,4 @@ function validate(title, content) {
   };
 }
 
-export default connect(mapStateToProps,{createBlog, deleteBlog, updateBlog})(App);
+export default connect(mapStateToProps,{createBlog, deleteBlog, updateBlog, searchBlog})(App);
