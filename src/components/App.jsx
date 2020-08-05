@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { createBlog, deleteBlog, updateBlog, searchBlog,sortBlog} from '../actions';
 import moment from 'moment';
-import { FaEdit } from "react-icons/fa";
+
 import { confirmAlert } from 'react-confirm-alert';
 import { Dropdown } from 'react-bootstrap';
 import Pagination from '../components/Pagination';
+import BlogList from '../components/BlogList';
 import API from '../utils/API';
 
 class App extends Component {
@@ -173,53 +174,55 @@ class App extends Component {
   }
 
 
-  renderBlogs() {
-    const { blogList } = this.props;
-
-    this.currentBlogs = this.setCurrentBlog(blogList);
-    return (<ul className="list-group col blog-list-group">
-    {
-      this.currentBlogs.map(blog => {
-        return (
-          <li key={blog.id} className="list-group-item">
-            <div className="row">
-              <div className="col-9">
-                <div className="blog-title"> {blog.title}
-                  <span className="blog-datecreated"> {moment(blog.datecreated).format("MMM-DD")} </span>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="blog-delete">
-                    <button type="button" className="close" aria-label="Close"
-                    onClick={() => this.confirmDelete(blog.id)}>
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                    <FaEdit className="edit" onClick={() => this.editBlog(blog)} />
-                </div>
-
-              </div>
-            </div>
-            <div className="blog-content"> {blog.content} </div>
-          </li>
-        )
-
-      })
-    }
-
-    <Pagination
-        postsPerPage={this.state.postsPerPage}
-        totalPosts={blogList.length}
-        currentPage={this.state.currentPage}
-        paginate={pageNumber => this.paginate(pageNumber)}
-      />
-
-    </ul>
-
-  )}
+  // renderBlogs() {
+  //   const { blogList } = this.props;
+  //
+  //   this.currentBlogs = this.setCurrentBlog(blogList);
+  //   return (<ul className="list-group col blog-list-group">
+  //   {
+  //     this.currentBlogs.map(blog => {
+  //       return (
+  //         <li key={blog.id} className="list-group-item">
+  //           <div className="row">
+  //             <div className="col-9">
+  //               <div className="blog-title"> {blog.title}
+  //                 <span className="blog-datecreated"> {moment(blog.datecreated).format("MMM-DD")} </span>
+  //               </div>
+  //             </div>
+  //             <div className="col-3">
+  //               <div className="blog-delete">
+  //                   <button type="button" className="close" aria-label="Close"
+  //                   onClick={() => this.confirmDelete(blog.id)}>
+  //                     <span aria-hidden="true">&times;</span>
+  //                   </button>
+  //                   <FaEdit className="edit" onClick={() => this.editBlog(blog)} />
+  //               </div>
+  //
+  //             </div>
+  //           </div>
+  //           <div className="blog-content"> {blog.content} </div>
+  //         </li>
+  //       )
+  //
+  //     })
+  //   }
+  //
+  //   <Pagination
+  //       postsPerPage={this.state.postsPerPage}
+  //       totalPosts={blogList.length}
+  //       currentPage={this.state.currentPage}
+  //       paginate={pageNumber => this.paginate(pageNumber)}
+  //     />
+  //
+  //   </ul>
+  //
+  // )}
 
   render() {
     const errors = validate(this.state.title, this.state.content);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
+    const { blogList } = this.props;
+    this.currentBlogs = this.setCurrentBlog(blogList);
     return (
       <div className="App container">
         <div className="title">
@@ -264,7 +267,19 @@ class App extends Component {
           </button></div>}
 
           {this.renderSearch()}
-          {this.renderBlogs()}
+          <ul className="list-group col blog-list-group">
+            <BlogList
+              blogs={ this.currentBlogs }
+              confirmDelete = {id => this.confirmDelete(id)}
+              editBlog = {blog => this.editBlog(blog)}
+            />
+            <Pagination
+                postsPerPage={this.state.postsPerPage}
+                totalPosts={blogList.length}
+                currentPage={this.state.currentPage}
+                paginate={pageNumber => this.paginate(pageNumber)}
+              />
+          </ul>
       </div>
     )
   }
