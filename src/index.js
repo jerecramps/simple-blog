@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './index.css'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 
+
 const store = createStore(reducer);
 
 ReactDOM.render(

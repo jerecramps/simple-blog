@@ -1,4 +1,4 @@
-import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG, SEARCH_BLOG } from '../constants';
+import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG, SEARCH_BLOG, SORT_BLOG } from '../constants';
 
 export const createBlog = (title, content, datecreated) => {
   const action = {
@@ -36,5 +36,14 @@ export const searchBlog = (search) => {
     type: SEARCH_BLOG,
     search: search
   }
+  return action;
+}
+
+export const sortBlog = (sortBy) => {
+  const action = {
+    type: SORT_BLOG,
+    sortBy: sortBy
+  }
+  console.log(action);
   return action;
 }

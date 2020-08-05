@@ -1,4 +1,4 @@
-import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG, SEARCH_BLOG} from '../constants';
+import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG, SEARCH_BLOG, SORT_BLOG} from '../constants';
 import { bake_cookie, read_cookie } from 'sfcookies';
 
 const blog = (action) => {
@@ -18,11 +18,15 @@ const removeById = (state = [], id) => {
 const updateBlog = (state = [], action) => {
   const blogs = state.map(blog => {
     if(blog.id === action.id) {
-      blog = action;
+      blog = {
+        title: action.title,
+        content: action.content,
+        datecreated: action.datecreated,
+        id: action.id
+      };
     }
     return blog;
   })
-
   return blogs;
 }
 
@@ -30,6 +34,17 @@ const searchBlog = (state = [], action) => {
   state = read_cookie('blogs');
   const blogs = state.filter(blog => blog.title.toLowerCase().includes(action.search) || blog.content.toLowerCase().includes(action.search));
   return blogs;
+}
+
+const sortBlog = (state = [], action) => {
+  let blogs;
+  switch(action) {
+    case 'Title':
+      return state.sort((a, b) => a.title > b.title ? 1 : -1)
+    case 'Date Created':
+      return state.sort((a, b) => a.datecreated > b.datecreated ? 1 : -1)
+  }
+
 }
 
 const blogs = (state=[], action) => {
@@ -51,6 +66,9 @@ const blogs = (state=[], action) => {
     case SEARCH_BLOG:
       blogs = searchBlog(state, action);
       return blogs;
+    case SORT_BLOG:
+      blogs = sortBlog(state, action);
+    //  return blogs;
     default:
       return state;
   }

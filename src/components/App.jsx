@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component,useState} from 'react';
 import { connect } from 'react-redux';
-import { createBlog, deleteBlog, updateBlog, searchBlog} from '../actions';
+import { createBlog, deleteBlog, updateBlog, searchBlog,sortBlog} from '../actions';
 import moment from 'moment';
 import { FaEdit } from "react-icons/fa";
 import { confirmAlert } from 'react-confirm-alert';
-
-
+import { Dropdown } from 'react-bootstrap';
 class App extends Component {
 
   constructor(props) {
@@ -88,8 +87,13 @@ class App extends Component {
     this.props.searchBlog(this.state.search);
   }
 
-  renderBlogs() {
+  sortBlog(sortBy) {
+    this.ActionItem = sortBy;
+    this.props.sortBlog(sortBy);
 
+  }
+
+  renderBlogs() {
     const { blogList } = this.props;
 
     return (<ul className="list-group col blog-list-group">
@@ -116,12 +120,46 @@ class App extends Component {
             </div>
             <div className="blog-content"> {blog.content} </div>
           </li>
-
         )
+
       })
     }
+
     </ul>
+
   )}
+
+  renderSearch() {
+  return (<div className="search-class row">
+      <div className="col-3">
+        <input
+            className="form-control"
+            placeholder="Search keyword"
+            value={this.state.search}
+            onChange={event=>this.setState({search:event.target.value})}/>
+      </div>
+      <div className="col-2 search-btn">
+        <button type="button"
+                className="btn btn-info"
+                onClick={(event)=>this.searchBlog()}>
+                Search
+        </button>
+      </div>
+      <div className="col-7 sort-class">
+      <Dropdown>
+        <Dropdown.Toggle variant="success" id="dropdown-basic">
+          {this.ActionItem = "Sort By"}
+        </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={(event)=>this.sortBlog('Title')}>Title</Dropdown.Item>
+            <Dropdown.Item onClick={(event)=>this.sortBlog('Date Created')}>Date Created</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+    </div>)
+  }
+
+
   render() {
     const errors = validate(this.state.title, this.state.content);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
@@ -167,24 +205,9 @@ class App extends Component {
                   onClick={(event)=>this.cancelEdit()}>
                   Cancel Edit
           </button></div>}
-          <div className="search-class row">
-            <div className="col-3">
-              <input
-                  className="form-control"
-                  placeholder="Search keyword"
-                  value={this.state.search}
-                  onChange={event=>this.setState({search:event.target.value})}/>
-            </div>
-            <div className="col-2 search-btn">
-              <button type="button"
-                      className="btn btn-info"
-                      onClick={(event)=>this.searchBlog()}>
-                      Search
-              </button>
-            </div>
-          </div>
 
-        {this.renderBlogs()}
+          {this.renderSearch()}
+          {this.renderBlogs()}
       </div>
     )
   }
@@ -204,4 +227,4 @@ function validate(title, content) {
   };
 }
 
-export default connect(mapStateToProps,{createBlog, deleteBlog, updateBlog, searchBlog})(App);
+export default connect(mapStateToProps,{createBlog, deleteBlog, updateBlog, searchBlog, sortBlog})(App);
