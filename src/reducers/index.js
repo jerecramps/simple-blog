@@ -37,13 +37,21 @@ const searchBlog = (state = [], action) => {
 }
 
 const sortBlog = (state = [], action) => {
-  let blogs;
-  switch(action) {
-    case 'Title':
-      return state.sort((a, b) => a.title > b.title ? 1 : -1)
-    case 'Date Created':
-      return state.sort((a, b) => a.datecreated > b.datecreated ? 1 : -1)
+
+  let blogs = state;
+  let split_action = action.sortBy.split('|');
+  switch(split_action[1]) {
+    case 'asc':
+      blogs = state.sort((a, b) => (a[split_action[0]] > b[split_action[0]]) ? 1 : -1)
+    break;
+    case 'desc':
+      blogs = state.sort((a, b) => (a[split_action[0]] < b[split_action[0]]) ? 1 : -1)
+    break;
+    default:
+     break;
   }
+
+  return blogs;
 
 }
 
@@ -68,7 +76,8 @@ const blogs = (state=[], action) => {
       return blogs;
     case SORT_BLOG:
       blogs = sortBlog(state, action);
-    //  return blogs;
+      bake_cookie('blogs', blogs);
+      return blogs;
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import React, {Component,useState} from 'react';
+import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { createBlog, deleteBlog, updateBlog, searchBlog,sortBlog} from '../actions';
 import moment from 'moment';
@@ -13,13 +13,13 @@ class App extends Component {
       title :'',
       content : '',
       datecreated : moment().format('YYYY/MM/DD'),
-      search: ''
+      search: '',
+      sortBy: ''
     }
   }
 
   editId: number;
   updateClicked: boolean = false;
-
 
   createBlog(event) {
     this.props.createBlog(this.state.title, this.state.content, this.state.datecreated);
@@ -56,7 +56,6 @@ class App extends Component {
     this.updateClicked = false;
   }
 
-
   deleteBlog(id) {
     this.props.deleteBlog(id);
   }
@@ -87,10 +86,11 @@ class App extends Component {
     this.props.searchBlog(this.state.search);
   }
 
-  sortBlog(sortBy) {
-    this.ActionItem = sortBy;
-    this.props.sortBlog(sortBy);
-
+  ActionItem: string = "Sort By";
+  sortBlog(event) {
+    let split_event = event.split("|");
+    this.ActionItem = (split_event[0] + " " + split_event[1]).toUpperCase();
+    this.props.sortBlog(event);
   }
 
   renderBlogs() {
@@ -146,13 +146,15 @@ class App extends Component {
         </button>
       </div>
       <div className="col-7 sort-class">
-      <Dropdown>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
-          {this.ActionItem = "Sort By"}
+      <Dropdown >
+        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+          {this.ActionItem}
         </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={(event)=>this.sortBlog('Title')}>Title</Dropdown.Item>
-            <Dropdown.Item onClick={(event)=>this.sortBlog('Date Created')}>Date Created</Dropdown.Item>
+          <Dropdown.Menu >
+            <Dropdown.Item eventKey="title|asc" onSelect={(event) => this.sortBlog(event)}>TITLE ASC</Dropdown.Item>
+            <Dropdown.Item eventKey="title|desc" onSelect={(event) => this.sortBlog(event)}>TITLE DESC</Dropdown.Item>
+            <Dropdown.Item eventKey="datecreated|asc" onSelect={(event) => this.sortBlog(event)}>DATE CREATED ASC</Dropdown.Item>
+            <Dropdown.Item eventKey="datecreated|desc" onSelect={(event) => this.sortBlog(event)}>DATE CREATED DESC</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>
