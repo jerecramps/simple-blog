@@ -5,6 +5,8 @@ import moment from 'moment';
 import { FaEdit } from "react-icons/fa";
 import { confirmAlert } from 'react-confirm-alert';
 import { Dropdown } from 'react-bootstrap';
+import Pagination from '../components/Pagination';
+
 class App extends Component {
 
   constructor(props) {
@@ -14,12 +16,18 @@ class App extends Component {
       content : '',
       datecreated : moment().format('YYYY/MM/DD'),
       search: '',
-      sortBy: ''
+      sortBy: '',
+      currentPage: 1,
+      postsPerPage: 3
     }
+
   }
 
   editId: number;
   updateClicked: boolean = false;
+  indexOfLastBlog : number;
+  indexOfFirstBlog :number;
+  currentBlogs: [];
 
   createBlog(event) {
     this.props.createBlog(this.state.title, this.state.content, this.state.datecreated);
@@ -96,9 +104,10 @@ class App extends Component {
   renderBlogs() {
     const { blogList } = this.props;
 
+    this.currentBlogs = this.setCurrentBlog(blogList);
     return (<ul className="list-group col blog-list-group">
     {
-      blogList.map(blog => {
+      this.currentBlogs.map(blog => {
         return (
           <li key={blog.id} className="list-group-item">
             <div className="row">
@@ -125,9 +134,29 @@ class App extends Component {
       })
     }
 
+    <Pagination
+        postsPerPage={this.state.postsPerPage}
+        totalPosts={blogList.length}
+        currentPage={this.state.currentPage}
+        paginate={pageNumber => this.paginate(pageNumber)}
+      />
+
     </ul>
 
   )}
+
+  paginate(pageNumber) {
+    this.setState({currentPage:pageNumber})
+    return this.state.currentPage;
+  }
+
+  setCurrentBlog(blogList) {
+    this.indexOfLastBlog = this.state.currentPage * this.state.postsPerPage;
+    this.indexOfFirstBlog = this.indexOfLastBlog - this.state.postsPerPage;
+    let currentBlogs = blogList.slice(this.indexOfFirstBlog, this.indexOfLastBlog);
+    return currentBlogs;
+  }
+
 
   renderSearch() {
   return (<div className="search-class row">

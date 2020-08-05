@@ -72,3 +72,14 @@ button.btn.btn-danger.col-6 {
 .sort-class {
     text-align: end;
 }
+
+ul.pagination.pagination-class {
+  margin-top: 5px;
+  color: cornflowerblue;
+}
+
+li.page-item.item-class {
+  border: solid 1px;
+    border-radius: 0.25rem;
+    border-color: lightblue;
+}
