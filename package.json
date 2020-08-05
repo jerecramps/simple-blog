@@ -1,6 +1,7 @@
 {
   "name": "simple-blog-exam",
   "version": "0.1.0",
+  "author": "jeremiah.crampatanta",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
