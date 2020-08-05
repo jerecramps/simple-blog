@@ -6,6 +6,7 @@ import { FaEdit } from "react-icons/fa";
 import { confirmAlert } from 'react-confirm-alert';
 import { Dropdown } from 'react-bootstrap';
 import Pagination from '../components/Pagination';
+import API from '../utils/API';
 
 class App extends Component {
 
@@ -30,6 +31,14 @@ class App extends Component {
   currentBlogs: [];
 
   createBlog(event) {
+    //post syntax
+    // try {
+    //   const response = await axios.post('/api/blog/InsertBlog', { blog_title: this.state.title, blog_content: this.state.content, blog_created:this.state.datecreated });
+    //   console.log('👉 Returned data:', response);
+    // } catch (e) {
+    //   console.log(`😱 Axios request failed: ${e}`);
+    // }
+
     this.props.createBlog(this.state.title, this.state.content, this.state.datecreated);
     this.setState({
       title: '',
@@ -101,6 +110,69 @@ class App extends Component {
     this.props.sortBlog(event);
   }
 
+  paginate(pageNumber) {
+    this.setState({currentPage:pageNumber})
+    return this.state.currentPage;
+  }
+
+  setCurrentBlog(blogList) {
+    this.indexOfLastBlog = this.state.currentPage * this.state.postsPerPage;
+    this.indexOfFirstBlog = this.indexOfLastBlog - this.state.postsPerPage;
+    let currentBlogs = blogList.slice(this.indexOfFirstBlog, this.indexOfLastBlog);
+    return currentBlogs;
+  }
+
+  // async componentDidMount() {
+  //   try {
+  //     let blogData = await API.get('/');
+  //     blogData = blogData.data[0];
+  //     this.setState({
+  //       title :blogData.blog_title,
+  //       content : blogData.blog_content,
+  //       datecreated : moment(new Date(blogData.blog_created)).format('YYYY/MM/DD'),
+  //     })
+  //
+  //     console.log(blogData);
+  //   } catch (e) {
+  //     console.log(`Axios request failed: ${e}`);
+  //   }
+  //
+  // }
+
+
+  renderSearch() {
+  return (<div className="search-class row">
+      <div className="col-3">
+        <input
+            className="form-control"
+            placeholder="Search keyword"
+            value={this.state.search}
+            onChange={event=>this.setState({search:event.target.value})}/>
+      </div>
+      <div className="col-2 search-btn">
+        <button type="button"
+                className="btn btn-info"
+                onClick={(event)=>this.searchBlog()}>
+                Search
+        </button>
+      </div>
+      <div className="col-7 sort-class">
+      <Dropdown >
+        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+          {this.ActionItem}
+        </Dropdown.Toggle>
+          <Dropdown.Menu >
+            <Dropdown.Item eventKey="title|asc" onSelect={(event) => this.sortBlog(event)}>TITLE ASC</Dropdown.Item>
+            <Dropdown.Item eventKey="title|desc" onSelect={(event) => this.sortBlog(event)}>TITLE DESC</Dropdown.Item>
+            <Dropdown.Item eventKey="datecreated|asc" onSelect={(event) => this.sortBlog(event)}>DATE CREATED ASC</Dropdown.Item>
+            <Dropdown.Item eventKey="datecreated|desc" onSelect={(event) => this.sortBlog(event)}>DATE CREATED DESC</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+    </div>)
+  }
+
+
   renderBlogs() {
     const { blogList } = this.props;
 
@@ -144,52 +216,6 @@ class App extends Component {
     </ul>
 
   )}
-
-  paginate(pageNumber) {
-    this.setState({currentPage:pageNumber})
-    return this.state.currentPage;
-  }
-
-  setCurrentBlog(blogList) {
-    this.indexOfLastBlog = this.state.currentPage * this.state.postsPerPage;
-    this.indexOfFirstBlog = this.indexOfLastBlog - this.state.postsPerPage;
-    let currentBlogs = blogList.slice(this.indexOfFirstBlog, this.indexOfLastBlog);
-    return currentBlogs;
-  }
-
-
-  renderSearch() {
-  return (<div className="search-class row">
-      <div className="col-3">
-        <input
-            className="form-control"
-            placeholder="Search keyword"
-            value={this.state.search}
-            onChange={event=>this.setState({search:event.target.value})}/>
-      </div>
-      <div className="col-2 search-btn">
-        <button type="button"
-                className="btn btn-info"
-                onClick={(event)=>this.searchBlog()}>
-                Search
-        </button>
-      </div>
-      <div className="col-7 sort-class">
-      <Dropdown >
-        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-          {this.ActionItem}
-        </Dropdown.Toggle>
-          <Dropdown.Menu >
-            <Dropdown.Item eventKey="title|asc" onSelect={(event) => this.sortBlog(event)}>TITLE ASC</Dropdown.Item>
-            <Dropdown.Item eventKey="title|desc" onSelect={(event) => this.sortBlog(event)}>TITLE DESC</Dropdown.Item>
-            <Dropdown.Item eventKey="datecreated|asc" onSelect={(event) => this.sortBlog(event)}>DATE CREATED ASC</Dropdown.Item>
-            <Dropdown.Item eventKey="datecreated|desc" onSelect={(event) => this.sortBlog(event)}>DATE CREATED DESC</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
-    </div>)
-  }
-
 
   render() {
     const errors = validate(this.state.title, this.state.content);

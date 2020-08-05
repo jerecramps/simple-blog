@@ -1,24 +1,24 @@
 .title {
   background: whitesmoke;
-  font-size: 50px;
+  font-size: 3.125rem;
   text-align: center;
-  padding: 27px;
+  padding: 1.6875rem;
   font-family: monospace;
 }
 
 .input-content {
-  margin-top: 50px;
+  margin-top: 3.125rem;
 }
 
 .blog-title {
   font-weight: bold;
-  font-size: 30px;
+  font-size: 1.875rem;
   text-transform: uppercase;
 }
 
 .blog-list-group {
   padding:0;
-  margin-top: 10px;
+  margin-top: 0.625rem;
 }
 
 .title-group {
@@ -28,13 +28,13 @@
 .blog-datecreated {
   text-align: end;
   font-weight: 100;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-family: -webkit-body;
   color: darkgray;
 }
 
 .li.list-group-item {
-  margin-bottom:5px;
+  margin-bottom:0.3125rem;
 }
 
 .edit {
@@ -45,25 +45,25 @@
 }
 
 button.btn.btn-secondary {
-  margin-right: 5px;
+  margin-right: 0.3125rem;
 }
 
 button.btn.btn-danger.col-6 {
-  left: 2px;
+  left: 0.125rem;
 }
 .modal-content-2 {
   font-family: Arial, Helvetica, sans-serif;
-   width: 400px;
-   padding: 30px;
+   width: 25rem;
+   padding: 1.875rem;
    text-align: left;
     background: ghostwhite;
    border-radius: 10px;
-   box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13);
+   box-shadow: 0 1.25rem 4.6875rem rgba(0, 0, 0, 0.13);
    color: #666;
 }
 
 .search-class {
-    margin-top: 9px;
+    margin-top: 0.5625rem;
 }
 .search-btn {
   padding: 0;
@@ -74,12 +74,13 @@ button.btn.btn-danger.col-6 {
 }
 
 ul.pagination.pagination-class {
-  margin-top: 5px;
+  margin-top: 0.3125rem;
   color: cornflowerblue;
 }
 
 li.page-item.item-class {
-  border: solid 1px;
+  border: solid 0.0625rem;
     border-radius: 0.25rem;
     border-color: lightblue;
+    cursor:pointer;
 }
