@@ -7,7 +7,8 @@ import { confirmAlert } from 'react-confirm-alert';
 import { Dropdown } from 'react-bootstrap';
 import Pagination from '../components/Pagination';
 import BlogList from '../components/BlogList';
-import API from '../utils/API';
+import ReusableButton from '../re-usable/ReusableButton';
+// import API from '../utils/API';
 
 class App extends Component {
 
@@ -31,7 +32,7 @@ class App extends Component {
   indexOfFirstBlog :number;
   currentBlogs: [];
 
-  createBlog(event) {
+  createBlog () {
     //post syntax
     // try {
     //   const response = await axios.post('/api/blog/InsertBlog', { blog_title: this.state.title, blog_content: this.state.content, blog_created:this.state.datecreated });
@@ -248,12 +249,14 @@ class App extends Component {
           </div>
         </div>
 
-          {!this.updateClicked && <button type="button"
-                  className="btn btn-success"
-                  disabled={isDisabled}
-                  onClick={(event)=>this.createBlog(event)}>
-                  Create Blog
-          </button>}
+          {!this.updateClicked &&
+          <ReusableButton
+            buttonType = "btn-success"
+            isDisabled = {isDisabled}
+            onClickEvent = {() => this.createBlog()}
+            buttonText = "Create Blog"
+            />
+          }
           {this.updateClicked && <div><button type="button"
                   className="btn btn-secondary"
                   disabled={isDisabled}
