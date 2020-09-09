@@ -8,6 +8,7 @@ import { Dropdown } from 'react-bootstrap';
 import Pagination from '../components/Pagination';
 import BlogList from '../components/BlogList';
 import ReusableButton from '../re-usable/ReusableButton';
+// import ComponentButton from '../re-usable/ComponentButton';
 // import API from '../utils/API';
 
 class App extends Component {
@@ -226,8 +227,7 @@ class App extends Component {
     this.currentBlogs = this.setCurrentBlog(blogList);
     return (
       <div className="App container">
-        <div className="title">
-          Simple Blog App
+        <div className="title"> Simple Blog
         </div>
 
         <div className="input-content">
@@ -256,6 +256,12 @@ class App extends Component {
             onClickEvent = {() => this.createBlog()}
             buttonText = "Create Blog"
             />
+            // <ComponentButton
+            // buttonType = "btn-success"
+            // isDisabled = {isDisabled}
+            // onClickEvent = {() => this.createBlog()}
+            // buttonText = "Create Blog"
+            // />
           }
           {this.updateClicked && <div><button type="button"
                   className="btn btn-secondary"
@@ -290,7 +296,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    blogList: state
+    blogList: state.blogs
   }
 }
 

@@ -1,5 +1,7 @@
+// import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG, SEARCH_BLOG, SORT_BLOG, FETCH_BLOG} from '../constants';
 import { CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG, SEARCH_BLOG, SORT_BLOG} from '../constants';
 import { bake_cookie, read_cookie } from 'sfcookies';
+import  {combineReducers}  from 'redux';
 
 const blog = (action) => {
   return {
@@ -55,6 +57,11 @@ const sortBlog = (state = [], action) => {
 
 }
 
+// const fetchBlog = (state = [], action) => {
+//   let blogs = state;
+//   return blogs;
+// }
+
 const blogs = (state=[], action) => {
   let blogs = null;
   state = read_cookie('blogs');
@@ -78,9 +85,12 @@ const blogs = (state=[], action) => {
       blogs = sortBlog(state, action);
       bake_cookie('blogs', blogs);
       return blogs;
+    // case FETCH_BLOG:
+    //   blogs = action.payload;
+    //   break;
     default:
       return state;
   }
 }
 
-export default blogs;
+export default combineReducers({blogs});
